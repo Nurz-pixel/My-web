@@ -1,183 +1,159 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <title>Website Saya</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background: #f4f4f4;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>React Channel</title>
 
-    header {
-      background: #007bff;
-      color: white;
-      padding: 20px;
-      text-align: center;
-    }
+<style>
+body{
+  margin:0;
+  min-height:100vh;
+  font-family: sans-serif;
+  padding:20px;
+  background: linear-gradient(
+    to bottom,
+    #ffffff 25%,
+    #e5e5e5 25%
+  );
+  color:#0f172a;
+}
 
-    nav {
-      background: #333;
-      padding: 10px;
-      text-align: center;
-    }
+/* Judul */
+h2{
+  text-align:center;
+  margin-bottom:10px;
+}
 
-    nav a {
-      color: white;
-      margin: 0 15px;
-      text-decoration: none;
-      font-weight: bold;
-    }
+.hr-title{
+  width:100%;
+  height:2px;
+  background:white;
+  border:none;
+  margin-bottom:20px;
+}
 
-    main {
-      padding: 20px;
-    }
+/* Input */
+input{
+  padding:10px;
+  margin-bottom:10px;
+  width:100%;
+  box-sizing:border-box;
+  border:1px solid #ccc;
+}
 
-    footer {
-      background: #222;
-      color: white;
-      text-align: center;
-      padding: 10px;
-      position: fixed;
-      bottom: 0;
-      width: 100%;
-    }
+/* Tombol */
+.btn-group{
+  display:flex;
+  gap:10px;
+}
 
-    section {
-      margin-bottom: 40px;
-    }
-  </style>
+button{
+  padding:10px;
+  width:100%;
+  background:#dbeafe; /* biru keputihan */
+  border:none;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+button:hover{
+  background:#bfdbfe;
+}
+
+/* Status */
+.status{
+  margin-top:10px;
+  font-weight:bold;
+}
+
+/* Kotak teks */
+.kotak-teks{
+  width:100%;
+  max-width:600px;
+  margin:30px auto;
+  padding:15px;
+  border:2px solid white;
+  background:transparent;
+  color:#0f172a;
+  box-sizing:border-box;
+}
+
+/* List jarak rapi */
+.kotak-teks ol{
+  padding-left:20px;
+}
+
+.kotak-teks li{
+  margin-bottom:10px;
+}
+</style>
 </head>
+
 <body>
 
-  <header>
-    <h1>Selamat Datang di Website Saya</h1>
-    <p>Ini adalah website buatan sendiri!</p>
-  </header>
+<h2>React Channel Generator</h2>
+<hr class="hr-title">
 
-  <nav>
-    <a href="#tentang">Tentang Saya</a>
-    <a href="#projek">Projek</a>
-    <a href="#kontak">Kontak</a>
-  </nav>
+<input type="text" id="link" placeholder="Link Channel WhatsApp">
+<input type="text" id="emoji" placeholder="Emoji (pisahkan dengan koma)">
 
-  <main>
-    <section id="tentang">
-      <h2>Tentang Saya</h2>
-      <p>Halo! Nama saya ilham. Saya sedang belajar membuat website menggunakan HTML dan CSS.</p>
-    </section>
+<div class="btn-group">
+  <button onclick="generate()">Generate</button>
+  <button onclick="resetForm()">Reset</button>
+</div>
 
-    <section id="projek">
-      <h2>Projek Saya</h2>
-      <ul>
-        <li>rahasia...</li>
-        <li>Game Sederhana</li>
-      </ul>
-    </section>
+<div class="status" id="status">Menunggu...</div>
 
-    <section id="kontak">
-      <h2>Kontak</h2>
-      <p>telp: 0877-****-****</p>
-    </section>
-  </main>
+<div class="kotak-teks">
+  <strong>Cara menggunakan ReactCH:</strong>
+  <ol>
+    <li>Salin link post channel yang kamu inginkan</li>
+    <li>Paste di kolom link channel</li>
+    <li>Masukkan emoji yang kamu inginkan</li>
+    <li>Jika lebih dari satu emoji, pisahkan dengan koma  
+      <br>Contoh: 😀,🔥,❤️
+    </li>
+  </ol>
+</div>
 
-  <footer>
-    &copy; 2025 Website inspirasi dari zeta:D. All rights reserved.
-  </footer>
+<p align="center"><strong>created by NurzMC</strong></p>
+
+<script>
+async function generate() {
+  const link = document.getElementById("link").value.trim();
+  const emoji = document.getElementById("emoji").value.trim();
+  const status = document.getElementById("status");
+
+  if (!link || !emoji) {
+    status.textContent = "Mohon isi semua field.";
+    return;
+  }
+
+  try {
+    const res = await fetch(
+      `https://react.whyux-xec.my.id/api/rch?link=${encodeURIComponent(link)}&emoji=${encodeURIComponent(emoji)}`,
+      {
+        headers: {
+          "x-api-key": "602c0622dba6571d89e29560e3d4fe7652529883ea3a6c316803c4b8812ace3f"
+        }
+      }
+    );
+
+    const data = await res.json();
+
+    status.textContent = data.error ? "Gagal" : `Berhasil dengan react: ${emoji}`;
+  } catch {
+    status.textContent = "Gagal";
+  }
+}
+
+function resetForm(){
+  document.getElementById("link").value = "";
+  document.getElementById("emoji").value = "";
+  document.getElementById("status").textContent = "Menunggu...";
+}
+</script>
 
 </body>
 </html>
-<<img src="https://i.pinimg.com/474x/ed/69/df/ed69df05cbff7af8b28f406872c2007b.jpg" alt="udh" width="300"><!DOCTYPE html>
-<html lang="id">
-<head>
-  <meta charset="UTF-8">
-  <title>Website Saya</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background: #f4f4f4;
-    }
-
-    header {
-      background: #007bff;
-      color: white;
-      padding: 20px;
-      text-align: center;
-    }
-
-    nav {
-      background: #333;
-      padding: 10px;
-      text-align: center;
-    }
-
-    nav a {
-      color: white;
-      margin: 0 15px;
-      text-decoration: none;
-      font-weight: bold;
-    }
-
-    main {
-      padding: 20px;
-    }
-
-    footer {
-      background: #222;
-      color: white;
-      text-align: center;
-      padding: 10px;
-      position: fixed;
-      bottom: 0;
-      width: 100%;
-    }
-
-    section {
-      margin-bottom: 40px;
-    }
-  </style>
-</head>
-<body>
-
-  <header>
-    <h1>Selamat Datang di Website Saya</h1>
-    <p>Ini adalah website buatan sendiri!</p>
-  </header>
-
-  <nav>
-    <a href="#tentang">Tentang Saya</a>
-    <a href="#projek">Projek</a>
-    <a href="#kontak">Kontak</a>
-  </nav>
-
-  <main>
-    <section id="tentang">
-      <h2>Tentang Saya</h2>
-      <p>Halo! Nama saya ilham. Saya sedang belajar membuat website menggunakan HTML dan CSS.</p>
-    </section>
-
-    <section id="projek">
-      <h2>Projek Saya</h2>
-      <ul>
-        <li>rahasia...</li>
-        <li>Game Sederhana</li>
-      </ul>
-    </section>
-
-    <section id="kontak">
-      <h2>Kontak</h2>
-      <p>telp: 0877-****-****</p>
-    </section>
-  </main>
-
-  <footer>
-    &copy; 2025 Website inspirasi dari zeta:D. All rights reserved.
-  </footer>
-
-</body>
-</html>
-<<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQWaU_6TLbcNOPW0pKCRi69enSZ2cHNcAKa4M1sAWX7mA&s" alt="udh" width="300">
